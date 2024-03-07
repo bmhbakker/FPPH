@@ -40,12 +40,9 @@ public class PlayerController : MonoBehaviour {
         Move();
     }
 
-    private void LateUpdate() {
-        transform.Rotate(Vector3.up * _playerLook.x * _lookSensitivity);
-
-        _lookRotation += (-_playerLook.y * _lookSensitivity);
-        _cameraHolder.transform.eulerAngles = new Vector3(_lookRotation, _cameraHolder.transform.eulerAngles.y,
-            _cameraHolder.transform.eulerAngles.z);
+    private void LateUpdate()
+    {
+        Look();
     }
 
     private void Move() {
@@ -60,5 +57,15 @@ public class PlayerController : MonoBehaviour {
         Vector3.ClampMagnitude(velocityChange, _maxForce);
 
         _rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
+    }
+
+    private void Look()
+    {
+        transform.Rotate(Vector3.up * _playerLook.x * _lookSensitivity);
+
+        _lookRotation += (-_playerLook.y * _lookSensitivity);
+        _lookRotation = Mathf.Clamp(_lookRotation, -90, 90);
+        _cameraHolder.transform.eulerAngles = new Vector3(_lookRotation, _cameraHolder.transform.eulerAngles.y,
+            _cameraHolder.transform.eulerAngles.z);
     }
 }
